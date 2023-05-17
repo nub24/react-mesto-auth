@@ -36,11 +36,11 @@ function EditProfilePopup({buttonText, isOpen, onClose, onUpdateUser}) {
           onClose={onClose}
           onSubmit={handleSubmit}
         >
-          <div className="popup__input-container">
+          <div className="form__input-container">
             <input
               type="text"
               name="name"
-              className="popup__input popup__input_profile_name"
+              className="form__input form__input_profile_name"
               placeholder="Введите имя"
               required
               minength="2"
@@ -48,11 +48,11 @@ function EditProfilePopup({buttonText, isOpen, onClose, onUpdateUser}) {
               value={name || ''}
               onChange={handleChangeName}
             />
-            <span className="popup__input-error name-error"></span>
+            <span className="form__input-error name-error"></span>
             <input
               type="text"
               name="about"
-              className="popup__input popup__input_profile_description"
+              className="form__input form__input_profile_description"
               placeholder="Введите описание"
               required
               minLength="2"
@@ -60,7 +60,7 @@ function EditProfilePopup({buttonText, isOpen, onClose, onUpdateUser}) {
               value={about || ''}
               onChange={handleChangeAbout}
             />
-            <span className="popup__input-error about-error"></span>
+            <span className="form__input-error about-error"></span>
           </div>
         </PopupWithForm>
   )

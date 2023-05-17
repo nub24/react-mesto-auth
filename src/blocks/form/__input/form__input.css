@@ -1,4 +1,4 @@
-.popup__input {
+.form__input {
   font-weight: 400;
   font-size: 14px;
   line-height: calc(17/14);
@@ -9,10 +9,10 @@
   outline-color: transparent;
 }
 
-.popup__input:nth-child(n+1) {
+.form__input:nth-child(n+1) {
   margin-top: 22px;
 }
 
-.popup__input:first-of-type {
+.form__input:first-of-type {
   margin-top: 0;
 }

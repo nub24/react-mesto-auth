@@ -1,4 +1,4 @@
-.popup__button-save {
+.form__button-save {
   height: 50px;
   background-color: #000;
   color: #fff;
@@ -12,11 +12,11 @@
   transition: var(--button-transition);
 }
 
-.popup__button-save:hover {
+.form__button-save:hover {
   opacity: .8;
 }
 
-.popup__button-save:disabled {
+.form__button-save:disabled {
   background-color: transparent;
   color: #000;
   opacity: .2;
@@ -24,14 +24,14 @@
   cursor: default;
 }
 
-.popup__button-save:disabled:hover {
+.form__button-save:disabled:hover {
   opacity: .2;
 }
 
 
 
 @media screen and (max-width: 618px) {
-  .popup__button-save {
+  .form__button-save {
     height: 46px;
     font-size: 14px;
     line-height: 17px;

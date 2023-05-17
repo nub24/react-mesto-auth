@@ -15,12 +15,12 @@ function PopupWithForm({ name, title, buttonText, isOpen, onClose, onSubmit, chi
         <h2 className="popup__title">{title}</h2>
         <form
           action="#"
-          className={`popup__form popup__form-${name}`}
+          className={`form form-${name}`}
           name={`form-${name}`}
           onSubmit={onSubmit}
         >
           {children}
-          <button type="submit" className="popup__button-save">
+          <button type="submit" className="form__button-save">
             {buttonText}
           </button>
         </form>
