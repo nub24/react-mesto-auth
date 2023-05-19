@@ -12,7 +12,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
 import Registration from "./Registration";
 import Login from "./Login";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import ProtectedRoute from './ProtectedRoute'
 import InfoTooltip from './InfoTooltip'
 
@@ -28,8 +28,9 @@ function App() {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [isDoneSignUp, setIsDoneSignUp] = useState(false)
+  const [loggedEmail, setLoggedEmail] = useState('');
 
   const handleCardClick = (props) => {
     setSelectedCard(props);
@@ -87,6 +88,24 @@ function App() {
       .catch((err) => console.log(`Ошибка получения данных: ${err}`));
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      Auth
+        .checkToken(token)
+        .then((res) => {
+          if (res) {
+            setLoggedEmail(res.data.email);
+            setLoggedIn(true);
+            navigate('/');
+          }
+        })
+        .catch(() => {
+          localStorage.removeItem('token');
+        })
+    }
+  },[loggedIn])
+
   function handleUpdateUser({ name, about }) {
     setIsLoading(true);
     api
@@ -132,7 +151,8 @@ function App() {
 
   function handleRegistration(password, email) {
     Auth.register(password, email)
-    .then(() => {
+    .then((data) => {
+      console.log(data);
       setIsDoneSignUp(true);
       setIsInfoTooltipOpen(true)
       navigate('/sign-in')
@@ -144,14 +164,41 @@ function App() {
     })
   }
 
+  function handleAuthorization(password, email) {
+    Auth.authorize(password, email)
+    .then(data => {
+      setLoggedIn(true);
+      localStorage.setItem('token', data.token);
+      navigate('/')
+    },
+    (err) => console.log(`Ошибка авторизации: ${err}`))
+  }
+
+  function onSignOut() {
+    setLoggedIn(false);
+    localStorage.removeItem('token');
+    navigate('sign-in')
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header 
+          loggedEmail={loggedEmail}
+          onSignOut={onSignOut}
+        />
 
         <Routes>
-          <Route path="sign-up" element={<Registration onRegistration={handleRegistration} />} />
-          <Route path="sign-in" element={<Login />} />
+          <Route 
+            path="/sign-up" 
+            element={<Registration 
+            onRegistration={handleRegistration} />} 
+          />
+
+          <Route 
+            path="/sign-in" 
+            element={<Login onAuthorization={handleAuthorization} />} 
+          />
           <Route
             path="/"
             element={

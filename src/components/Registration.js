@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function Registration({ onRegistration }) {
 
@@ -49,7 +50,8 @@ function Registration({ onRegistration }) {
         Зарегистрироваться
       </button>
     </form>
-    <p className="form__alternate-text">Уже зарегистрированы? Войти</p>
+    <p className="form__alternate-text">
+      Уже зарегистрированы? <Link className='form__link' to='/sign-in'>Войти</Link></p>
     </div>
     
   )
