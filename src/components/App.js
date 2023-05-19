@@ -12,7 +12,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
 import Registration from "./Registration";
 import Login from "./Login";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import ProtectedRoute from './ProtectedRoute'
 import InfoTooltip from './InfoTooltip'
 
@@ -80,13 +80,15 @@ function App() {
 
   // get user data & cards
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getCards()])
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getCards()])
       .then(([userData, cardsData]) => {
         setCurrentUser(userData);
         setCards(cardsData);
       })
       .catch((err) => console.log(`Ошибка получения данных: ${err}`));
-  }, []);
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -215,12 +217,19 @@ function App() {
               />
             }
           />
+          <Route 
+            path='*' 
+            element={ <Navigate to='/sign-in' /> } 
+          />
         </Routes>
 
         <InfoTooltip
           isOpen={isInfoTooltipOpen}
           onClose={closeAllPopups}
           isDoneSignUp={isDoneSignUp}
+          infoText={isDoneSignUp 
+            ? 'Вы успешно зарегистрировались!'
+            : 'Что-то пошло не так! Попробуйте ещё раз.'}
         />
 
         <EditProfilePopup

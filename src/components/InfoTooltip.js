@@ -3,7 +3,7 @@ import registrationFailImg from '../images/registration-fail.svg';
 import usePopupClose from '../hooks/usePopupClose';
 
 
-function InfoTooltip({isOpen, onClose, isDoneSignUp}) {
+function InfoTooltip({isOpen, onClose, isDoneSignUp, infoText}) {
   usePopupClose(isOpen, onClose)
   return (
     <div className={`popup ${isOpen && 'popup_active'}`}>
@@ -18,10 +18,7 @@ function InfoTooltip({isOpen, onClose, isDoneSignUp}) {
           alt={isDoneSignUp ? 'Иконка успешно' : 'Иконка ошибка'}
           />
         <h2 className="popup__title popup__title_align_center">
-        {isDoneSignUp 
-          ? 'Вы успешно зарегистрировались!'
-          : 'Что-то пошло не так! Попробуйте ещё раз.'
-        }
+          {infoText}
         </h2>
         
       </div>
