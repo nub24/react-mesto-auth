@@ -1,7 +1,7 @@
 //props.name (edit, add, delete, avatar)
 import usePopupClose from '../hooks/usePopupClose';
 
-function PopupWithForm({ name, title, buttonText, isOpen, onClose, onSubmit, children }) {
+function PopupWithForm({ name, title, buttonText, isOpen, onClose, onSubmit, children, isDisabled }) {
   usePopupClose(isOpen, onClose);
 
   return (
@@ -18,9 +18,10 @@ function PopupWithForm({ name, title, buttonText, isOpen, onClose, onSubmit, chi
           className={`form form-${name}`}
           name={`form-${name}`}
           onSubmit={onSubmit}
+          noValidate
         >
           {children}
-          <button type="submit" className="form__button-save">
+          <button type="submit" className="form__button-save" disabled={isDisabled}>
             {buttonText}
           </button>
         </form>

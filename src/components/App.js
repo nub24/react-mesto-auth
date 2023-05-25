@@ -154,16 +154,15 @@ function App() {
   function handleRegistration(password, email) {
     Auth.register(password, email)
     .then((data) => {
-      console.log(data);
       setIsDoneSignUp(true);
       setIsInfoTooltipOpen(true)
       navigate('/sign-in')
-    },
-    (err) => {
+    })
+    .catch((err) => {
       console.log(`Ошибка регистрации: ${err}`);
       setIsDoneSignUp(false);
       setIsInfoTooltipOpen(true);
-    })
+    })    
   }
 
   function handleAuthorization(password, email) {
@@ -172,8 +171,8 @@ function App() {
       setLoggedIn(true);
       localStorage.setItem('token', data.token);
       navigate('/')
-    },
-    (err) => console.log(`Ошибка авторизации: ${err}`))
+    })
+    .catch((err) => console.log(`Ошибка авторизации: ${err}`))
   }
 
   function onSignOut() {

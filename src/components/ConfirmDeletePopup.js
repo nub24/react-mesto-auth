@@ -10,6 +10,7 @@ function ConfirmDeletePopup({ isOpen, onClose, onSubmit, buttonText }) {
       isOpen={isOpen}
       onSubmit={onSubmit}
       buttonText={buttonText}
+      isValid={true}
       />
     
   )

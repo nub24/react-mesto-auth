@@ -1,12 +1,13 @@
 import { useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import PopupWithForm from "./PopupWithForm";
-import useForm from '../hooks/useForm'
+import { useFormAndValidation } from '../hooks/useFormAndValidation'
 
 function EditProfilePopup({buttonText, isOpen, onClose, onUpdateUser}) {
 
   const currentUser=useContext(CurrentUserContext);
-  const { values, handleChange, setValues} = useForm({});
+  const { values, handleChange, errors, isValid, resetForm } = useFormAndValidation();
+  
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -16,11 +17,10 @@ function EditProfilePopup({buttonText, isOpen, onClose, onUpdateUser}) {
   }
 
   useEffect(() => {
-    setValues({
-      name : currentUser.name,
-      about : currentUser.about
-    })
-  }, [currentUser, isOpen])
+    if (currentUser) {
+      resetForm(currentUser)
+    }
+  }, [currentUser, isOpen, resetForm])
 
   return (
     <PopupWithForm
@@ -30,24 +30,28 @@ function EditProfilePopup({buttonText, isOpen, onClose, onUpdateUser}) {
           isOpen={isOpen}
           onClose={onClose}
           onSubmit={handleSubmit}
+          isDisabled={!isValid}
         >
           <div className="form__input-container">
             <input
               type="text"
               name="name"
-              className="form__input form__input_profile_name"
+              className="form__input"
               placeholder="Введите имя"
               required
-              minength="2"
+              minLength="2"
               maxLength="40"
               value={values.name || ''}
               onChange={handleChange}
             />
-            <span className="form__input-error name-error"></span>
+            <span className={`
+              form__input-error 
+              ${!isValid ? 'form__input-error_visible' : ''}`}
+            >{errors.name || ''}</span>
             <input
               type="text"
               name="about"
-              className="form__input form__input_profile_description"
+              className="form__input"
               placeholder="Введите описание"
               required
               minLength="2"
@@ -55,7 +59,10 @@ function EditProfilePopup({buttonText, isOpen, onClose, onUpdateUser}) {
               value={values.about || ''}
               onChange={handleChange}
             />
-            <span className="form__input-error about-error"></span>
+            <span className={`
+              form__input-error
+              ${!isValid ? 'form__input-error_visible' : ''}`}
+            >{errors.about || ''}</span>
           </div>
         </PopupWithForm>
   )
