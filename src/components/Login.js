@@ -1,50 +1,57 @@
-import { useState } from 'react'
+import { useFormAndValidation } from '../hooks/useFormAndValidation'
 
 function Login({ onAuthorization }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  function handleChangeEmail(evt) {
-    setEmail(evt.target.value);
-  }
-
-  function handleChangePassword(evt) {
-    setPassword(evt.target.value); 
-  }
+  const { values, handleChange, errors, isValid, resetForm } = useFormAndValidation();
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onAuthorization(password, email)
+    onAuthorization(values.authPassword, values.authEmail);
+    resetForm();
   }
 
   return (
     <div className='form__container'>
       <h2 className='popup__title form__title'>Вход</h2>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit} noValidate>
       <div className="form__input-container">
             <input
               type="email"
-              name="registration-email"
-              className="form__input form__input_theme_dark form__input_place_name"
+              name="authEmail"
+              className={
+                errors.authEmail 
+                ? `form__input form__input_theme_dark form__input_type_error` 
+                : 'form__input form__input_theme_dark'}
               placeholder="Email"
               required
-              value={email || ''}
-              onChange={handleChangeEmail}
+              value={values.authEmail || ''}
+              onChange={handleChange}
             />
-            <span className="form__input-error registration-email-error"></span>
+            <span className={`
+              form__input-error 
+              ${!isValid ? 'form__input-error_visible' : ''}`}>
+                {errors.authEmail || ''}
+              </span>
             <input
               type="password"
-              name="registration-password"
-              className="form__input form__input_theme_dark form__input_place_link"
+              name="authPassword"
+              className={
+                errors.authPassword 
+                ? `form__input form__input_theme_dark form__input_type_error` 
+                : 'form__input form__input_theme_dark'}
               placeholder="Пароль"
               required
-              value={password || ''}
-              onChange={handleChangePassword}
+              value={values.authPassword || ''}
+              onChange={handleChange}
             />
-            <span className="form__input-error registration-password-error"></span>
+            <span className={`
+              form__input-error 
+              ${!isValid ? 'form__input-error_visible' : ''}`}>
+              {errors.authPassword || ''}
+            </span>
           </div>
         
-      <button className='form__button-save form__button-save_theme_dark'>
+      <button className='form__button-save form__button-save_theme_dark' disabled={!isValid}>
         Войти
       </button>
     </form>
